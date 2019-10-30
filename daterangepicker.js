@@ -109,14 +109,14 @@
                 '</div>' +
                 '<div class="time-picker">'+
                 '<div class="drp-calendar left">' +
-                    '<div class="time-label">Hämtas <span class="higlighter">28 augusti 2019</span></div>' +
+                    '<div class="time-label">Hämtas <span class="higlighter start-higlighter"></span></div>' +
                     '<div class="calendar-time"></div>' +
                 '</div>' +
                 '<div class="drp-calendar right">' +
-                    '<div class="time-label">Lämnas <span class="higlighter">30 augusti 2019</span></div>' +
+                    '<div class="time-label">Lämnas <span class="higlighter end-higlighter"></span></div>' +
                     '<div class="calendar-time"></div>' +
                 '</div>' +
-                '<button class="btn btn-success w-100" type="button">SPARA</button> ' +
+                '<button class="btn btn-success w-100 saveBtn" type="button">SPARA</button> ' +
                 '</div>' +
                 '<div class="drp-buttons">' +
                     '<span class="drp-selected"></span>' +
@@ -434,6 +434,13 @@
         this.container.find('.drp-buttons')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+        
+        this.container.find('.time-picker')
+            .on('click.daterangepicker', 'button.saveBtn', $.proxy(this.clickApply, this))
+
+        // this.container.find('drp-calendar')
+        //     .on('change.daterangepicker', 'select.hourselect', 
+        //     this.container.find('.right .hourselect').val(10));
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
@@ -452,6 +459,8 @@
         //
 
         this.updateElement();
+
+        this.updateTimePickerLabel();
 
     };
 
@@ -488,6 +497,8 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+
+            this.updateTimePickerLabel();
         },
 
         setEndDate: function(endDate) {
@@ -520,6 +531,22 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+
+            this.updateTimePickerLabel();
+        },
+
+        updateTimePickerLabel: function(){
+
+            this.container.find('.start-higlighter')
+                .html(moment(this.startDate).format('DD MMM YYYY'));
+            
+            if(this.endDate) {
+                this.container.find('.end-higlighter')
+                    .html(moment(this.endDate).format('DD MMM YYYY'));
+            }else{  
+                this.container.find('.end-higlighter')
+                    .html('-- --- ----');
+            }
         },
 
         isInvalidDate: function() {
@@ -939,82 +966,82 @@
             // minutes
             //
 
-            html += ': <select class="minuteselect">';
+            // html += ': <select class="minuteselect">';
 
-            for (var i = 0; i < 60; i += this.timePickerIncrement) {
-                var padded = i < 10 ? '0' + i : i;
-                var time = selected.clone().minute(i);
+            // for (var i = 0; i < 60; i += this.timePickerIncrement) {
+            //     var padded = i < 10 ? '0' + i : i;
+            //     var time = selected.clone().minute(i);
 
-                var disabled = false;
-                if (minDate && time.second(59).isBefore(minDate))
-                    disabled = true;
-                if (maxDate && time.second(0).isAfter(maxDate))
-                    disabled = true;
+            //     var disabled = false;
+            //     if (minDate && time.second(59).isBefore(minDate))
+            //         disabled = true;
+            //     if (maxDate && time.second(0).isAfter(maxDate))
+            //         disabled = true;
 
-                if (selected.minute() == i && !disabled) {
-                    html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
-                } else if (disabled) {
-                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
-                } else {
-                    html += '<option value="' + i + '">' + padded + '</option>';
-                }
-            }
+            //     if (selected.minute() == i && !disabled) {
+            //         html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+            //     } else if (disabled) {
+            //         html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+            //     } else {
+            //         html += '<option value="' + i + '">' + padded + '</option>';
+            //     }
+            // }
 
-            html += '</select> ';
+            // html += '</select> ';
 
             //
             // seconds
             //
 
-            if (this.timePickerSeconds) {
-                html += ': <select class="secondselect">';
+            // if (this.timePickerSeconds) {
+            //     html += ': <select class="secondselect">';
 
-                for (var i = 0; i < 60; i++) {
-                    var padded = i < 10 ? '0' + i : i;
-                    var time = selected.clone().second(i);
+            //     for (var i = 0; i < 60; i++) {
+            //         var padded = i < 10 ? '0' + i : i;
+            //         var time = selected.clone().second(i);
 
-                    var disabled = false;
-                    if (minDate && time.isBefore(minDate))
-                        disabled = true;
-                    if (maxDate && time.isAfter(maxDate))
-                        disabled = true;
+            //         var disabled = false;
+            //         if (minDate && time.isBefore(minDate))
+            //             disabled = true;
+            //         if (maxDate && time.isAfter(maxDate))
+            //             disabled = true;
 
-                    if (selected.second() == i && !disabled) {
-                        html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
-                    } else if (disabled) {
-                        html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
-                    } else {
-                        html += '<option value="' + i + '">' + padded + '</option>';
-                    }
-                }
+            //         if (selected.second() == i && !disabled) {
+            //             html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+            //         } else if (disabled) {
+            //             html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+            //         } else {
+            //             html += '<option value="' + i + '">' + padded + '</option>';
+            //         }
+            //     }
 
-                html += '</select> ';
-            }
+            //     html += '</select> ';
+            // }
 
             //
             // AM/PM
             //
 
-            if (!this.timePicker24Hour) {
-                html += '<select class="ampmselect">';
+            // if (!this.timePicker24Hour) {
+            //     html += '<select class="ampmselect">';
 
-                var am_html = '';
-                var pm_html = '';
+            //     var am_html = '';
+            //     var pm_html = '';
 
-                if (minDate && selected.clone().hour(12).minute(0).second(0).isBefore(minDate))
-                    am_html = ' disabled="disabled" class="disabled"';
+            //     if (minDate && selected.clone().hour(12).minute(0).second(0).isBefore(minDate))
+            //         am_html = ' disabled="disabled" class="disabled"';
 
-                if (maxDate && selected.clone().hour(0).minute(0).second(0).isAfter(maxDate))
-                    pm_html = ' disabled="disabled" class="disabled"';
+            //     if (maxDate && selected.clone().hour(0).minute(0).second(0).isAfter(maxDate))
+            //         pm_html = ' disabled="disabled" class="disabled"';
 
-                if (selected.hour() >= 12) {
-                    html += '<option value="AM"' + am_html + '>AM</option><option value="PM" selected="selected"' + pm_html + '>PM</option>';
-                } else {
-                    html += '<option value="AM" selected="selected"' + am_html + '>AM</option><option value="PM"' + pm_html + '>PM</option>';
-                }
+            //     if (selected.hour() >= 12) {
+            //         html += '<option value="AM"' + am_html + '>AM</option><option value="PM" selected="selected"' + pm_html + '>PM</option>';
+            //     } else {
+            //         html += '<option value="AM" selected="selected"' + am_html + '>AM</option><option value="PM"' + pm_html + '>PM</option>';
+            //     }
 
-                html += '</select>';
-            }
+            //     html += '</select>';
+            // }
 
             this.container.find('.drp-calendar.' + side + ' .calendar-time').html(html);
 
