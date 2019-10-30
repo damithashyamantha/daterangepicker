@@ -966,28 +966,28 @@
             // minutes
             //
 
-            // html += ': <select class="minuteselect">';
+            html += ': <select class="minuteselect">';
 
-            // for (var i = 0; i < 60; i += this.timePickerIncrement) {
-            //     var padded = i < 10 ? '0' + i : i;
-            //     var time = selected.clone().minute(i);
+            for (var i = 0; i < 60; i += this.timePickerIncrement) {
+                var padded = i < 10 ? '0' + i : i;
+                var time = selected.clone().minute(i);
 
-            //     var disabled = false;
-            //     if (minDate && time.second(59).isBefore(minDate))
-            //         disabled = true;
-            //     if (maxDate && time.second(0).isAfter(maxDate))
-            //         disabled = true;
+                var disabled = false;
+                if (minDate && time.second(59).isBefore(minDate))
+                    disabled = true;
+                if (maxDate && time.second(0).isAfter(maxDate))
+                    disabled = true;
 
-            //     if (selected.minute() == i && !disabled) {
-            //         html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
-            //     } else if (disabled) {
-            //         html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
-            //     } else {
-            //         html += '<option value="' + i + '">' + padded + '</option>';
-            //     }
-            // }
+                if (selected.minute() == i && !disabled) {
+                    html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+                } else if (disabled) {
+                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+                } else {
+                    html += '<option value="' + i + '">' + padded + '</option>';
+                }
+            }
 
-            // html += '</select> ';
+            html += '</select> ';
 
             //
             // seconds
