@@ -538,11 +538,11 @@
         updateTimePickerLabel: function(){
 
             this.container.find('.start-higlighter')
-                .html(moment(this.startDate).format('DD MMM YYYY'));
+                .html(moment(this.startDate).locale('sv').format('DD MMM YYYY'));
             
             if(this.endDate) {
                 this.container.find('.end-higlighter')
-                    .html(moment(this.endDate).format('DD MMM YYYY'));
+                    .html(moment(this.endDate).locale('sv').format('DD MMM YYYY'));
             }else{  
                 this.container.find('.end-higlighter')
                     .html('-- --- ----');
