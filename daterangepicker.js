@@ -902,6 +902,7 @@
                 minDate = this.minDate;
             } else if (side == 'right') {
                 selected = this.endDate.clone();
+                selected = moment(selected.format('YYYY-MM-DD') + ' '+ moment().format('HH:mm'));
                 minDate = this.startDate;
 
                 //Preserve the time already selected
